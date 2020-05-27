@@ -1,32 +1,38 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
+  <div>
+    <header class="header">
+      <h2 class="heading-primary">FILMOTEKA</h2>
+    </header>
+
+    <transition name="fade" mode="out-in">
+      <component :is="selectedComponent"></component>
+    </transition>
+
+    <footer class="footer">
+      <p class="footer__credits">Napravio: Luka Patrun.</p>
+    </footer>
   </div>
 </template>
 
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script>
+import MoviesGrid from './components/MoviesGrid'
+import SingleMovie from './components/SingleMovie'
+import GenrePicker from './components/GenrePicker'
 
-#nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
+export default {
+  computed: {
+    selectedComponent () {
+      return this.$store.state.selectedComponent
     }
+  },
+  components: {
+    'my-movies-grid': MoviesGrid,
+    'my-single-movie': SingleMovie,
+    'my-genre-picker': GenrePicker
+  },
+  created () {
+    this.$store.dispatch('generateMovies')
+    this.$store.dispatch('generateGenres')
   }
 }
-</style>
+</script>
