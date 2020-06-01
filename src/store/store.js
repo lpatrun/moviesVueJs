@@ -43,6 +43,7 @@ export const store = new Vuex.Store({
       state.movies.forEach(function (element) {
         element.rate = 0
       })
+      state.singleMovie = state.movies[0]
     },
     moviesToDisplay (state) {
       if (state.endingMovie + 4 <= 20) {
