@@ -6,7 +6,7 @@
       </div>
       <div class="mySingle__title">{{movie.title}} - {{movie.release_date}}</div>
       <div class="mySingle__stars" :data-itemid="movie.id">
-        <span v-for="i in 10" :key="i" :id="i" @click="saveStar($event)" :style= "[rate >= i ? {'color': 'orange'} : {'color': 'black'}]">☆</span>
+        <span v-for="i in 10" :key="i" :id="i" @click="saveStar" :style= "[rate >= i ? {'color': 'orange'} : {'color': 'black'}]">☆</span>
       </div>
       <div class="mySingle__overview"><strong>Overview</strong>: {{movie.overview}}</div>
       <div class="mySingle__container">
