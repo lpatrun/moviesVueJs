@@ -13,38 +13,29 @@ export const store = new Vuex.Store({
     startingMovie: 0,
     endingMovie: 0,
     singleMovie: {},
-    selectedComponent: 'my-movies-grid',
     genres: {},
     selectedIndex: 0
   },
   mutations: {
     saveStar (state, rating) {
       state.movies[state.selectedIndex].rate = parseInt(rating)
-      console.log(rating)
-    },
-    goToGenres (state) {
-      state.selectedComponent = 'my-genre-picker'
-    },
-    returnHome (state) {
-      state.selectedComponent = 'my-movies-grid'
     },
     generateGenreMovie (state, moviesFromGenre) {
-      const obj = state.movies.find(o => parseInt(o.id) === moviesFromGenre.results[0].id)
+      const randomNum = Math.floor(Math.random() * 20)
+      const obj = state.movies.find(o => parseInt(o.id) === moviesFromGenre.results[randomNum].id)
       if (obj) {
-        const objIndex = state.movies.findIndex(o => parseInt(o.id) === moviesFromGenre.results[0].id)
+        const objIndex = state.movies.findIndex(o => parseInt(o.id) === moviesFromGenre.results[randomNum].id)
         state.selectedIndex = objIndex
         state.singleMovie = obj
       } else {
         state.selectedIndex = state.movies.length
-        state.movies.push(moviesFromGenre.results[0])
+        state.movies.push(moviesFromGenre.results[randomNum])
         state.movies[state.selectedIndex].rate = 0
         state.singleMovie = state.movies[state.selectedIndex]
       }
-      state.selectedComponent = 'my-single-movie'
     },
     selectMovie (state, index) {
       state.singleMovie = state.movies[index]
-      state.selectedComponent = 'my-single-movie'
       state.selectedIndex = index
     },
     generateMovies (state, movies) {

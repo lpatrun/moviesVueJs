@@ -6,16 +6,7 @@
       </div>
       <div class="mySingle__title">{{movie.title}} - {{movie.release_date}}</div>
       <div class="mySingle__stars" :data-itemid="movie.id">
-        <span id="1" @click="saveStar($event)" :style= "[rate >= 1 ? {'color': 'orange'} : {'color': 'black'}]">☆</span>
-        <span id="2" @click="saveStar($event)" :style= "[rate >= 2 ? {'color': 'orange'} : {'color': 'black'}]">☆</span>
-        <span id="3" @click="saveStar($event)" :style= "[rate >= 3 ? {'color': 'orange'} : {'color': 'black'}]">☆</span>
-        <span id="4" @click="saveStar($event)" :style= "[rate >= 4 ? {'color': 'orange'} : {'color': 'black'}]">☆</span>
-        <span id="5" @click="saveStar($event)" :style= "[rate >= 5 ? {'color': 'orange'} : {'color': 'black'}]">☆</span>
-        <span id="6" @click="saveStar($event)" :style= "[rate >= 6 ? {'color': 'orange'} : {'color': 'black'}]">☆</span>
-        <span id="7" @click="saveStar($event)" :style= "[rate >= 7 ? {'color': 'orange'} : {'color': 'black'}]">☆</span>
-        <span id="8" @click="saveStar($event)" :style= "[rate >= 8 ? {'color': 'orange'} : {'color': 'black'}]">☆</span>
-        <span id="9" @click="saveStar($event)" :style= "[rate >= 9 ? {'color': 'orange'} : {'color': 'black'}]">☆</span>
-        <span id="10" @click="saveStar($event)" :style= "[rate >= 10 ? {'color': 'orange'} : {'color': 'black'}]">☆</span>
+        <span v-for="i in 10" :key="i" :id="i" @click="saveStar($event)" :style= "[rate >= i ? {'color': 'orange'} : {'color': 'black'}]">☆</span>
       </div>
       <div class="mySingle__overview"><strong>Overview</strong>: {{movie.overview}}</div>
       <div class="mySingle__container">
@@ -36,13 +27,16 @@ import ReturnButton from './ReturnButton'
 export default {
   data () {
     return {
-      movie: {},
       rate: 0
     }
   },
   created () {
-    this.movie = this.$store.state.singleMovie
     this.rate = this.$store.state.singleMovie.rate
+  },
+  computed: {
+    movie () {
+      return this.$store.state.singleMovie
+    }
   },
   methods: {
     saveStar (event) {
@@ -61,3 +55,109 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.mySingle {
+  display: grid;
+  grid-template-columns: 45vw 35vw;
+  grid-template-rows: repeat(2, min-content) 2fr 1fr;
+  width: 80vw;
+  margin: 5vh auto;
+  box-shadow: 2px 2px 16px rgba(0,0,0,.9);
+
+  @media only screen and (max-width: 900px) {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: min-content;
+    width: 80vw;
+    margin: 5vh auto;
+    box-shadow: 2px 2px 16px rgba(0,0,0,.9);
+  }
+  &__image {
+    grid-row: 1 / -1;
+    grid-column: 1 / 2;
+
+    @media only screen and (max-width: 900px) {
+      grid-row: 1 / 2;
+      grid-column: 1 / -1;
+    }
+
+    img {
+      width: 45vw;
+      height: 100%;
+      object-fit:cover;
+
+      @media only screen and (max-width: 900px) {
+        width: 100%;
+        height: 100%;
+        object-fit:cover;
+      }
+    }
+  }
+
+  &__title {
+    grid-row: 1 / 2;
+    grid-column: 2 / 3;
+    padding: 1rem 1rem 0 1rem;
+    font-size: 2.4rem;
+
+    @media only screen and (max-width: 900px) {
+      grid-row: 2 / 3;
+      grid-column: 1 / -1;
+    }
+  }
+
+  &__stars {
+    grid-row: 2 / 3;
+    grid-column: 2 / 3;
+    font-size: 4rem;
+    padding: 0 1rem 1rem 1rem;
+    cursor: pointer;
+
+    @media only screen and (max-width: 900px) {
+      font-size: 3rem;
+      grid-row: 3 / 4;
+      grid-column: 1 / -1;
+    }
+  }
+
+  &__overview {
+    grid-row: 3 / 4;
+    grid-column: 2 / 3;
+    padding: 1rem;
+    font-size: 1.6rem;
+
+    @media only screen and (max-width: 900px) {
+      grid-row: 4 / 5;
+      grid-column: 1 / -1;
+    }
+  }
+
+  &__container {
+    grid-row: 4 / 5;
+    grid-column: 2 / 3;
+    padding: 1rem;
+    margin-bottom: 2rem;
+    text-align: center;
+
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+
+    @media only screen and (max-width: 900px) {
+      grid-row: 5 / 6;
+      grid-column: 1 / -1;
+    }
+  }
+}
+
+.category {
+  grid-row: 1 / 2;
+  font-size: 1.8rem;
+}
+
+.data {
+  grid-row: 2 / 3;
+  font-size: 3.2rem;
+}
+</style>

@@ -1,15 +1,14 @@
 <template>
     <div>
-        <button class="button button__back" @click="returnHome">&#8592;</button>
+      <router-link class="button button__back" to="/" tag="button">&#8592;</router-link>
     </div>
 </template>
 
-<script>
-export default {
-  methods: {
-    returnHome () {
-      this.$store.commit('returnHome')
-    }
-  }
+<style lang="scss" scoped>
+.button__back {
+  width: 60px;
+  border-radius: 30px;
+  padding: 0;
+  margin-left: 10%;
 }
-</script>
+</style>

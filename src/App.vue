@@ -5,7 +5,7 @@
     </header>
 
     <transition name="fade" mode="out-in">
-      <component :is="selectedComponent"></component>
+      <router-view></router-view>
     </transition>
 
     <footer class="footer">
@@ -15,24 +15,107 @@
 </template>
 
 <script>
-import MoviesGrid from './components/MoviesGrid'
-import SingleMovie from './components/SingleMovie'
-import GenrePicker from './components/GenrePicker'
-
 export default {
   computed: {
     selectedComponent () {
       return this.$store.state.selectedComponent
     }
   },
-  components: {
-    'my-movies-grid': MoviesGrid,
-    'my-single-movie': SingleMovie,
-    'my-genre-picker': GenrePicker
-  },
   created () {
     this.$store.dispatch('generateMovies')
     this.$store.dispatch('generateGenres')
   }
 }
+
 </script>
+<style lang="scss">
+html {
+  font-size: 62.5%;
+}
+
+@media only screen and (max-width: 900px) {
+  html {
+    font-size: 50%;
+  }
+}
+
+body, ul, li, p, h1, h2, h3, h4 {
+  font-family: "Lato", sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+ul li {
+  list-style-type: none;
+}
+
+::selection {
+  background-color: firebrick;
+  color: white;
+}
+
+@font-face {
+  font-family: "Azonix";
+  src: ('../../public/Azonix.otf');
+}
+
+.button {
+  background-color: firebrick;
+  color: white;
+  padding: 0;
+  border: none;
+  cursor: pointer;
+  font-size: 22px;
+  height: 60px;
+    &:focus {
+    outline: none;
+  }
+}
+
+.fade-enter {
+  opacity: 0;
+}
+
+.fade-enter-active {
+  transition: opacity .15s ease-in-out;
+}
+
+.fade-leave {
+  opacity: 1;
+}
+
+.fade-leave-active {
+  opacity: 0;
+  transition: opacity .15s ease-in-out;
+}
+</style>
+
+<style lang="scss" scoped>
+.header {
+  text-align: center;
+  width: 100%;
+  background-color: firebrick;
+  color: white;
+}
+
+.heading-primary {
+  font-family: "Azonix", sans-serif;
+  font-size: 30px;
+  padding: 30px;
+
+  @media only screen and (max-width: 900px) {
+    font-size: 25px;
+    padding: 25px;
+  }
+}
+
+.footer {
+  display: flex;
+  justify-content: flex-end;
+
+  &__credits {
+    padding: 20px;
+  }
+}
+
+</style>
