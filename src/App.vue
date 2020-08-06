@@ -56,7 +56,7 @@ ul li {
 
 @font-face {
   font-family: "Azonix";
-  src: ('../../public/Azonix.otf');
+  src: url('../public/Azonix.otf');
 }
 
 .button {
