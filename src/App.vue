@@ -4,9 +4,7 @@
       <h2 class="heading-primary">FILMOTEKA</h2>
     </header>
 
-    <transition name="fade" mode="out-in">
-      <router-view></router-view>
-    </transition>
+    <router-view></router-view>
 
     <footer class="footer">
       <p class="footer__credits">Napravio: Luka Patrun.</p>
@@ -26,7 +24,6 @@ export default {
     this.$store.dispatch('generateGenres')
   }
 }
-
 </script>
 <style lang="scss">
 html {
@@ -39,7 +36,14 @@ html {
   }
 }
 
-body, ul, li, p, h1, h2, h3, h4 {
+body,
+ul,
+li,
+p,
+h1,
+h2,
+h3,
+h4 {
   font-family: "Lato", sans-serif;
   margin: 0;
   padding: 0;
@@ -56,7 +60,7 @@ ul li {
 
 @font-face {
   font-family: "Azonix";
-  src: url('../public/Azonix.otf');
+  src: url("../public/Azonix.otf");
 }
 
 .button {
@@ -67,7 +71,7 @@ ul li {
   cursor: pointer;
   font-size: 22px;
   height: 60px;
-    &:focus {
+  &:focus {
     outline: none;
   }
 }
@@ -77,7 +81,7 @@ ul li {
 }
 
 .fade-enter-active {
-  transition: opacity .15s ease-in-out;
+  transition: opacity 0.15s ease-in-out;
 }
 
 .fade-leave {
@@ -86,7 +90,7 @@ ul li {
 
 .fade-leave-active {
   opacity: 0;
-  transition: opacity .15s ease-in-out;
+  transition: opacity 0.15s ease-in-out;
 }
 </style>
 
@@ -117,5 +121,4 @@ ul li {
     padding: 20px;
   }
 }
-
 </style>

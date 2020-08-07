@@ -1,12 +1,12 @@
 <template>
   <div>
-    <div class="mySingle">
+    <div class="mySingle"  v-for="(movie, index) in movies" :key="index">
       <div class="mySingle__image" :alt="movie.title">
           <img :src ="'https://image.tmdb.org/t/p/w780/' + movie.backdrop_path" :alt="movie.title" />
       </div>
       <div class="mySingle__title">{{movie.title}} - {{movie.release_date}}</div>
       <div class="mySingle__stars" :data-itemid="movie.id">
-        <span v-for="i in 10" :key="i" :id="i" @click="saveStar" :style= "[rate >= i ? {'color': 'orange'} : {'color': 'black'}]">☆</span>
+        <span v-for="i in 10" :key="i" :id="i" @click="saveStar(i, movie.id)" :style= "[rate >= i ? {'color': 'orange'} : {'color': 'black'}]">☆</span>
       </div>
       <div class="mySingle__overview"><strong>Overview</strong>: {{movie.overview}}</div>
       <div class="mySingle__container">
@@ -27,27 +27,32 @@ import ReturnButton from './ReturnButton'
 export default {
   data () {
     return {
-      rate: 0
+      rate: 0,
+      id: this.$route.params.id
     }
   },
   created () {
-    this.rate = this.$store.state.singleMovie.rate
+    this.rate = this.$store.state.movies[this.id].rate
   },
   computed: {
-    movie () {
-      return this.$store.state.singleMovie
+    movies () {
+      return this.$store.state.movies.slice(this.id, +this.id + 1)
     }
   },
   methods: {
-    saveStar (event) {
+    saveStar (i, movieId) {
       const oldRate = parseInt(this.rate)
-      const rating = parseInt(event.currentTarget.id)
+      const rating = parseInt(i)
       if (oldRate === 1 && rating === 1) {
         this.rate = 0
       } else {
         this.rate = rating
       }
-      this.$store.commit('saveStar', this.rate)
+      const payload = {
+        rate: this.rate,
+        movieID: movieId
+      }
+      this.$store.commit('saveStar', payload)
     }
   },
   components: {

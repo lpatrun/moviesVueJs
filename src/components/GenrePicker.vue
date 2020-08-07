@@ -9,7 +9,7 @@
             {{ genre.name }}
           </label>
         </div>
-        <router-link to="/single-movie" tag="button" class="form__roll-button" @click.native="genreMovie">ROLL</router-link>
+        <router-link to="/genre-movie" tag="button" class="form__roll-button" @click.native="genreMovie">ROLL</router-link>
       </div>
     </div>
     <my-return-button></my-return-button>
@@ -143,8 +143,6 @@ export default {
     grid-column: 2 / 4;
     background-color: firebrick;
     box-shadow: 2px 2px 3px rgba(0,0,0,.6);
-    transform: translateY(3px);
-    transition: all .15s ease-in-out;
     color: #ededed;
     font-size: 3rem;
     cursor: pointer;
@@ -154,11 +152,6 @@ export default {
 
     @media only screen and (max-width: 900px) {
       grid-column: 1/-1;
-    }
-
-    &:hover {
-      transform: translateY(0px);
-      box-shadow: 2px 4px 8px rgba(0,0,0,.6);
     }
 
     &:active {

@@ -7,54 +7,34 @@ Vue.use(Vuex)
 
 export const store = new Vuex.Store({
   state: {
-    element: 0,
-    movies: {},
-    moviesToDisplay: [],
-    startingMovie: 0,
-    endingMovie: 0,
-    singleMovie: {},
+    movies: [],
     genres: {},
-    selectedIndex: 0
+    selectedIndex: 0,
+    endMovie: 4,
+    oneGenreMovie: []
   },
   mutations: {
-    saveStar (state, rating) {
-      state.movies[state.selectedIndex].rate = parseInt(rating)
+    saveStar (state, payload) {
+      const selectedMovie = state.movies.findIndex(element => element.id === payload.movieID)
+      state.movies[selectedMovie].rate = payload.rate
     },
     generateGenreMovie (state, moviesFromGenre) {
       const randomNum = Math.floor(Math.random() * 20)
-      const obj = state.movies.find(o => parseInt(o.id) === moviesFromGenre.results[randomNum].id)
-      if (obj) {
-        const objIndex = state.movies.findIndex(o => parseInt(o.id) === moviesFromGenre.results[randomNum].id)
-        state.selectedIndex = objIndex
-        state.singleMovie = obj
-      } else {
-        state.selectedIndex = state.movies.length
-        state.movies.push(moviesFromGenre.results[randomNum])
-        state.movies[state.selectedIndex].rate = 0
-        state.singleMovie = state.movies[state.selectedIndex]
-      }
-    },
-    selectMovie (state, index) {
-      state.singleMovie = state.movies[index]
-      state.selectedIndex = index
+      state.oneGenreMovie = moviesFromGenre[randomNum]
     },
     generateMovies (state, movies) {
       state.movies = movies.results
       state.movies.forEach(function (element) {
         element.rate = 0
       })
-      state.singleMovie = state.movies[0]
-    },
-    moviesToDisplay (state) {
-      if (state.endingMovie + 4 <= 20) {
-        state.endingMovie += 4
-        for (state.startingMovie; state.startingMovie < state.endingMovie; state.startingMovie++) {
-          state.moviesToDisplay.push(state.movies[state.startingMovie])
-        }
-      }
     },
     generateGenres (state, genres) {
       state.genres = genres.genres
+    },
+    loadRow (state) {
+      if (state.endMovie < 17) {
+        state.endMovie += 4
+      }
     }
   },
   actions: {
@@ -62,7 +42,6 @@ export const store = new Vuex.Store({
       Vue.http.get('https://api.themoviedb.org/3/discover/movie?api_key=5945a0abd9acd913047172b2e6571d3e&sort_by=popularity.desc&include_adult=false&include_video=false&page=1')
         .then(response => {
           commit('generateMovies', response.body)
-          commit('moviesToDisplay')
         })
         .catch((error) => {
           console.log(error.statusText)

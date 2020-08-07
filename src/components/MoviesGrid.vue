@@ -4,20 +4,19 @@
       <ul>
         <transition-group name="fade" class="render-movies">
           <router-link
-            to="/single-movie"
-            tag="li"
+            tag="a"
             class="movie"
-            v-for="(movie, index) in moviesToDisplay"
+            v-for="(movie, index) in movies"
+            :to="'/single-movie/' + index"
             :key="index"
             :id="index"
-            @click.native="selectMovie(index)"
           >
             <div class="movie__img">
               <img :src="'https://image.tmdb.org/t/p/w185/' + movie.poster_path" :alt="movie.title" />
             </div>
             <div
               class="movie__name-year"
-            >{{shortenTitle(movie.title)}} {{returnYear(movie.release_date)}}</div>
+            >{{ movie.title | shortenTitle }} {{ movie.release_date | shortenYear }}</div>
             <div class="movie__lang">Language: {{movie.original_language}}</div>
             <div class="movie__rating">Rating: {{movie.vote_average}}</div>
           </router-link>
@@ -25,7 +24,7 @@
       </ul>
     </div>
     <section class="button-container">
-      <button class="button button__load-more" @click="loadRow" v-if="endingMovie < 20">Učitaj još</button>
+      <button class="button button__load-more" @click="loadRow" v-if="endMovie < 20">Učitaj još</button>
       <router-link class="button button__movie-roulette" to="/genre-picker" tag="button">
         <i class="fas fa-dice"></i>
       </router-link>
@@ -36,36 +35,19 @@
 <script>
 export default {
   computed: {
+    endMovie () {
+      return this.$store.state.endMovie
+    },
     movies () {
-      return this.$store.state.movies
-    },
-    moviesToDisplay () {
-      return this.$store.state.moviesToDisplay
-    },
-    endingMovie () {
-      return this.$store.state.endingMovie
+      return this.$store.state.movies.slice(0, this.endMovie)
     }
   },
   methods: {
     goToGenres () {
       this.$store.commit('goToGenres')
     },
-    selectMovie (index) {
-      this.$store.commit('selectMovie', index)
-    },
     loadRow () {
-      this.$store.commit('moviesToDisplay')
-    },
-    shortenTitle (title) {
-      const maximumNameLength = 25
-      if (title.length > maximumNameLength) {
-        return title.slice(0, 20) + '...'
-      } else {
-        return title
-      }
-    },
-    returnYear (year) {
-      return '(' + year.slice(0, 4) + ')'
+      this.$store.commit('loadRow')
     }
   }
 }
@@ -141,8 +123,8 @@ export default {
 
   &__load-more {
     width: 120px;
-    border-radius: 5px;
     margin-left: 15%;
+    box-shadow: 2px 2px 3px rgba(0,0,0,.6);
   }
 
   &__movie-roulette {
@@ -151,6 +133,15 @@ export default {
     padding: 0;
     margin-right: 10%;
     float: right;
+    box-shadow: 2px 2px 3px rgba(0,0,0,.6);
   }
+}
+
+a,
+a:hover,
+a:active,
+a:visited {
+  color: black;
+  text-decoration: none;
 }
 </style>

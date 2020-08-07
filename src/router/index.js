@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../components/MoviesGrid'
-import SingleMovie from '../components/SingleMovie'
 import GenrePicker from '../components/GenrePicker'
 
 Vue.use(VueRouter)
@@ -13,9 +12,9 @@ const routes = [
     component: Home
   },
   {
-    path: '/single-movie',
+    path: '/single-movie/:id',
     name: 'single-movie',
-    component: SingleMovie
+    component: () => import('../components/SingleMovie')
   },
   {
     path: '/genre-picker',
@@ -27,7 +26,14 @@ const routes = [
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
-  routes
+  routes,
+  scrollBehavior (to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition
+    } else {
+      return { x: 0, y: 0 }
+    }
+  }
 })
 
 export default router

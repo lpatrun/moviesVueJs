@@ -10,5 +10,6 @@
   border-radius: 30px;
   padding: 0;
   margin-left: 10%;
+  box-shadow: 2px 2px 3px rgba(0,0,0,.6);
 }
 </style>
