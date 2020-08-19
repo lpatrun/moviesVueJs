@@ -9,7 +9,7 @@
             {{ genre.name }}
           </label>
         </div>
-        <router-link to="/genre-movie" tag="button" class="form__roll-button" @click.native="genreMovie">ROLL</router-link>
+        <button class="form__roll-button" @click="genreMovie">ROLL</button>
       </div>
     </div>
     <my-return-button></my-return-button>

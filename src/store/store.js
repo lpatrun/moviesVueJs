@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import VueResource from 'vue-resource'
+import router from '../router'
+// import VueRouter from 'vue-router'
 
 Vue.use(VueResource)
 Vue.use(Vuex)
@@ -18,9 +20,8 @@ export const store = new Vuex.Store({
       const selectedMovie = state.movies.findIndex(element => element.id === payload.movieID)
       state.movies[selectedMovie].rate = payload.rate
     },
-    generateGenreMovie (state, moviesFromGenre) {
-      const randomNum = Math.floor(Math.random() * 20)
-      state.oneGenreMovie = moviesFromGenre[randomNum]
+    generateGenreMovie (state, movieFromGenre) {
+      state.oneGenreMovie.push(movieFromGenre)
     },
     generateMovies (state, movies) {
       state.movies = movies.results
@@ -35,6 +36,12 @@ export const store = new Vuex.Store({
       if (state.endMovie < 17) {
         state.endMovie += 4
       }
+    },
+    changeRoute (state, id) {
+      router.push('/genre-movie/' + id)
+    },
+    clearGenre (state) {
+      state.oneGenreMovie = []
     }
   },
   actions: {
@@ -58,6 +65,17 @@ export const store = new Vuex.Store({
     },
     genreMovie ({ commit }, genreId) {
       Vue.http.get('https://api.themoviedb.org/3/discover/movie?api_key=5945a0abd9acd913047172b2e6571d3e&with_genres=' + genreId)
+        .then(response => {
+          const randomNum = Math.floor(Math.random() * response.body.results.length)
+          const movieID = response.body.results[randomNum].id
+          commit('changeRoute', movieID)
+        })
+        .catch((error) => {
+          console.log(error.statusText)
+        })
+    },
+    returnOneMovie ({ commit }, movieID) {
+      Vue.http.get('https://api.themoviedb.org/3/movie/' + movieID + '?api_key=5945a0abd9acd913047172b2e6571d3e')
         .then(response => {
           commit('generateGenreMovie', response.body)
         })

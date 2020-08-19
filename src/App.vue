@@ -1,7 +1,7 @@
 <template>
   <div>
     <header class="header">
-      <h2 class="heading-primary">FILMOTEKA</h2>
+      <router-link tag="h2" class="heading-primary" :to="'/'">FILMOTEKA</router-link>
     </header>
 
     <router-view></router-view>
@@ -106,6 +106,7 @@ ul li {
   font-family: "Azonix", sans-serif;
   font-size: 30px;
   padding: 30px;
+  cursor: pointer;
 
   @media only screen and (max-width: 900px) {
     font-size: 25px;
